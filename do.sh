@@ -26,19 +26,32 @@ printf "# **********************************************************************
 printf "\e[0m"
 
 containers=(vector)
+if [ $# -ne 0 ]; then
+	containers=($@);
+fi
 
 compile () {
-	echo "Compiling $1..."
-	$mli_cc $mli_cflags -I./$incl_path $1 2>/dev/null 1>&2
+	# 1=file 2=define used {ft/std}
+	$mli_cc $mli_cflags -o "$2.out" -I./$incl_path -DTESTED_NAMESPACE=$2 $1 2>/dev/null 1>&2
 	return $?
 }
 
 do_test () {
-	test_files=`ls $srcs/$1`
+	test_dir="$srcs/$1"
+	test_files=`ls $test_dir`
 
 	for file in ${test_files[@]}; do
+		echo "Compiling $file..."
 		rm -rf *.out
-		compile $file
+		compile "$test_dir/$file" "ft"; ft_ret=$?
+		compile "$test_dir/$file" "std"; std_ret=$?
+
+		#[ $ft_ret -eq $std_ret ] && echo "EQ" || echo "NE"
+
+		if [ $ft_ret -eq 1 ]; then
+			true;
+		fi
+
 		#a=$([ "$b" == 5 ] && echo "$c" || echo "$d")
 	done
 }
