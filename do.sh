@@ -36,27 +36,48 @@ compile () {
 	return $?
 }
 
+printRes () {
+	# 1=file 2=compile 3=bin 4=output
+	b[0]="✅"
+	b[1]="❌"
+	printf "%-18s COMPILE: ${b[$2]} | RET: ${b[$3]} | OUT: ${b[$4]}\n" $1
+}
+
+isEq () {
+	[ $1 -eq $2 ] && echo 0 || echo 1
+}
+
 do_test () {
 	test_dir="$srcs/$1"
 	test_files=`ls $test_dir`
 
 	for file in ${test_files[@]}; do
-		echo "Compiling $file..."
-		rm -rf *.out
 		compile "$test_dir/$file" "ft"; ft_ret=$?
 		compile "$test_dir/$file" "std"; std_ret=$?
+		same_compilation=$(isEq $ft_ret $std_ret)
 
-		#[ $ft_ret -eq $std_ret ] && echo "EQ" || echo "NE"
-
-		if [ $ft_ret -eq 1 ]; then
-			true;
+		> ft.txt; > std.txt;
+		if [ $ft_ret -eq 0 ]; then
+			./ft.out &>ft.txt; ft_ret=$?
 		fi
+		if [ $std_ret -eq 0 ]; then
+			./std.out &>std.txt; std_ret=$?
+		fi
+		same_bin=$(isEq $ft_ret $std_ret)
 
-		#a=$([ "$b" == 5 ] && echo "$c" || echo "$d")
+		deepthought="deepthought/$1_$file.txt"
+		diff std.txt ft.txt 2>/dev/null 1>"$deepthought";
+		same_output=$?
+
+		rm -f {ft,std}.{txt,out}
+		[ -s "$deepthought" ] || rm -f $deepthought &>/dev/null
+
+		printRes "$1/$file" $same_compilation $same_bin $same_output
 	done
 }
 
-
+mkdir -p deepthought
 for container in ${containers[@]}; do
 	do_test $container
 done
+rmdir deepthought &>/dev/null
