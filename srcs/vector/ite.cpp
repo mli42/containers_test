@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mli <mli@student.42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/20 16:59:05 by mli               #+#    #+#             */
-/*   Updated: 2021/01/12 17:19:12 by mli              ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "vector.hpp"
 #include <vector>
 
@@ -70,21 +58,15 @@ int		main(void)
 	prepost_incdec(vct);
 
 	it = it + 5;
+	it = 1 + it;
 	it = it - 4;
 	it += 2;
+	it -= 1;
 
 	std::cout << (ite == it) << std::endl;
 	std::cout << (ite - it) << std::endl;
-
-	//*ite = 3;
+	std::cout << (ite + 3 == it) << std::endl;
 
 	printSize(vct, true);
-	/*
-	vct.resize(10);
-	printSize(vct, 1);
-	*/
-//	std::cout << (vct == vctor) << std::endl;
-//	std::cout << (vctor == vctor) << std::endl;
-//	std::cout << (vct == vct) << std::endl;
 	return (0);
 }
