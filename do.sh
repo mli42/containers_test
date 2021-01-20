@@ -78,6 +78,6 @@ do_test () {
 
 mkdir -p deepthought
 for container in ${containers[@]}; do
-	do_test $container
+	do_test $container 2>/dev/null
 done
 rmdir deepthought &>/dev/null
