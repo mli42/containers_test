@@ -40,7 +40,7 @@ printRes () {
 	# 1=file 2=compile 3=bin 4=output
 	b[0]="✅"
 	b[1]="❌"
-	printf "%-18s COMPILE: ${b[$2]} | RET: ${b[$3]} | OUT: ${b[$4]}\n" $1
+	printf "%-35s: COMPILE: ${b[$2]} | RET: ${b[$3]} | OUT: ${b[$4]}\n" $1
 }
 
 isEq () {
