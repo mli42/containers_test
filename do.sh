@@ -49,7 +49,7 @@ isEq () {
 
 do_test () {
 	test_dir="$srcs/$1"
-	test_files=`ls $test_dir`
+	test_files=`ls $test_dir | grep "cpp"`
 
 	for file in ${test_files[@]}; do
 		compile "$test_dir/$file" "ft"; ft_ret=$?

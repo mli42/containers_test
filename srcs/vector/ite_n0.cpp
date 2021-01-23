@@ -1,9 +1,4 @@
-#include "vector.hpp"
-#include <vector>
-
-#ifndef TESTED_NAMESPACE
-# define TESTED_NAMESPACE ft
-#endif
+#include "common.hpp"
 
 #define TESTED_TYPE int
 
