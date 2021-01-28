@@ -33,14 +33,14 @@ int		main(void)
 	TESTED_NAMESPACE::vector<TESTED_TYPE>::const_iterator ite = vct.begin();
 
 	for (int i = 0; i < size; ++i)
-		it[i] = i;
+		it[i] = (size - i) * 5;
 	prepost_incdec(vct);
 
 	it = it + 5;
 	it = 1 + it;
 	it = it - 4;
-	it += 2;
-	it -= 1;
+	std::cout << *(it += 2) << std::endl;
+	std::cout << *(it -= 1) << std::endl;
 
 	std::cout << (ite == it) << std::endl;
 	std::cout << (ite - it) << std::endl;

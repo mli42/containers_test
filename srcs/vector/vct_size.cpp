@@ -4,14 +4,33 @@
 
 int		main(void)
 {
-	const int size = 20;
-	//TESTED_NAMESPACE::vector<TESTED_TYPE>::const_iterator ite = vct.begin();
-	TESTED_NAMESPACE::vector<TESTED_TYPE> vct(size, 20);
+	const int start_size = 7;
+	TESTED_NAMESPACE::vector<TESTED_TYPE> vct(start_size, 20);
+	TESTED_NAMESPACE::vector<TESTED_TYPE> vct2;
 	TESTED_NAMESPACE::vector<TESTED_TYPE>::iterator it = vct.begin();
 
-	for (int i = 5; i < size; ++i)
-		it[i] = i;
-
+	for (int i = 2; i < start_size; ++i)
+		it[i] = (start_size - i) * 3;
 	printSize(vct, true);
+
+	vct.resize(10, 42);
+	printSize(vct, true);
+
+	vct.resize(18, 43);
+	printSize(vct, true);
+	vct.resize(10);
+	printSize(vct, true);
+	vct.resize(23, 44);
+	printSize(vct, true);
+	vct.resize(11);
+	printSize(vct, true);
+	vct.reserve(5);
+	printSize(vct, true);
+
+	vct2 = vct;
+	vct.reserve(vct.capacity() + 1);
+	printSize(vct, true);
+
+	printSize(vct2, true);
 	return (0);
 }
