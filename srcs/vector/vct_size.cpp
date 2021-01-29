@@ -22,9 +22,13 @@ int		main(void)
 	printSize(vct, true);
 	vct.resize(23, 44);
 	printSize(vct, true);
-	vct.resize(11);
+	vct.resize(5);
 	printSize(vct, true);
 	vct.reserve(5);
+	vct.reserve(3);
+	printSize(vct, true);
+	vct.resize(87);
+	vct.resize(5);
 	printSize(vct, true);
 
 	vct2 = vct;
