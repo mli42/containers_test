@@ -2,6 +2,11 @@
 
 #define TESTED_TYPE int
 
+void	is_empty(TESTED_NAMESPACE::vector<TESTED_TYPE> const &vct)
+{
+	std::cout << "is_empty: " << vct.empty() << std::endl;
+}
+
 int		main(void)
 {
 	const int start_size = 7;
@@ -31,10 +36,15 @@ int		main(void)
 	vct.resize(5);
 	printSize(vct, true);
 
+	is_empty(vct2);
 	vct2 = vct;
+	is_empty(vct2);
 	vct.reserve(vct.capacity() + 1);
 	printSize(vct, true);
+	printSize(vct2, true);
 
+	vct2.resize(0);
+	is_empty(vct2);
 	printSize(vct2, true);
 	return (0);
 }
