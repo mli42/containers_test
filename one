@@ -1,0 +1,14 @@
+#!/usr/bin/env zsh
+
+if [ $# -eq 0 ]; then
+	echo "Usage: $0 <file> [namespace=ft] [path/to/includes=..]"
+	return
+fi
+
+if [ -z "$2" ]; then 2="ft"; fi
+if [ -z "$3" ]; then 3=".."; fi
+
+CC="clang++"
+CFLAGS="-Wall -Wextra -Werror -std=c++98"
+
+eval "$CC $CFLAGS $1 -DTESTED_NAMESPACE=$2 -I$3 && ./a.out"
