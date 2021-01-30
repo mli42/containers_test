@@ -8,7 +8,7 @@
 #endif
 
 template <typename T>
-void	printSize(TESTED_NAMESPACE::vector<T> const &vct, bool print_content = 0)
+void	printSize(TESTED_NAMESPACE::vector<T> const &vct, bool print_content = 1)
 {
 	std::cout << "size: " << vct.size() << std::endl;
 	std::cout << "capacity: " << vct.capacity() << std::endl;
