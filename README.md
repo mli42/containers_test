@@ -20,8 +20,8 @@ Then:
 ```
 
 ## Tested features
-- [ ] vector
-- [ ] vector's iterators
+- [x] vector
+- [x] vector's iterators
 - [ ] list
 - [ ] list's iterators
 - [ ] stack
