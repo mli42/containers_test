@@ -38,3 +38,11 @@ std::ostream	&operator<<(std::ostream &o, foo const &bar) {
 	o << bar.getValue();
 	return o;
 }
+
+template <typename T>
+T	inc(T it, int n)
+{
+	while (n-- > 0)
+		++it;
+	return (it);
+}
