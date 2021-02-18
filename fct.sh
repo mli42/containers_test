@@ -65,7 +65,7 @@ cmp_one () {
 	fi
 	same_bin=$(isEq $ft_ret $std_ret)
 
-	deepthought=$(echo "deepthought/$file" | sed s/cpp/txt/)
+	deepthought=$(echo "deepthought/$file" | sed s/cpp/$container.diff/)
 	diff std.txt ft.txt 2>/dev/null 1>"$deepthought";
 	same_output=$?
 
