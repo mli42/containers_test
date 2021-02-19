@@ -28,8 +28,8 @@ printf "\e[0;1;94m\
 }
 
 compile () {
-	# 1=file 2=define used {ft/std}
-	$CC $CFLAGS -o "$2.out" -I./$incl_path -DTESTED_NAMESPACE=$2 $1 2>/dev/null 1>&2
+	# 1=file 2=define used {ft/std} 3=output_file
+	$CC $CFLAGS -o "$3" -I./$incl_path -DTESTED_NAMESPACE=$2 $1 2>/dev/null 1>&2
 	return $?
 }
 
@@ -49,27 +49,29 @@ cmp_one () {
 
 	container=$(echo $1 | cut -d "/" -f 2)
 	file=$(echo $1 | cut -d "/" -f 3)
+	ft_bin="ft.$container.out"; ft_txt="ft.$container.txt"
+	std_bin="std.$container.out"; std_txt="std.$container.txt"
 	mkdir -p deepthought
 
-	compile "$1" "ft"; ft_ret=$?
-	compile "$1" "std"; std_ret=$?
+	compile "$1" "ft"  "$ft_bin";  ft_ret=$?
+	compile "$1" "std" "$std_bin"; std_ret=$?
 	same_compilation=$(isEq $ft_ret $std_ret)
 	std_compile=$std_ret
 
-	> ft.txt; > std.txt;
+	> $ft_txt; > $std_txt;
 	if [ $ft_ret -eq 0 ]; then
-		./ft.out &>ft.txt; ft_ret=$?
+		./$ft_bin &>$ft_txt; ft_ret=$?
 	fi
 	if [ $std_ret -eq 0 ]; then
-		./std.out &>std.txt; std_ret=$?
+		./$std_bin &>$std_txt; std_ret=$?
 	fi
 	same_bin=$(isEq $ft_ret $std_ret)
 
 	deepthought=$(echo "deepthought/$file" | sed s/cpp/$container.diff/)
-	diff std.txt ft.txt 2>/dev/null 1>"$deepthought";
+	diff $std_txt $ft_txt 2>/dev/null 1>"$deepthought";
 	same_output=$?
 
-	rm -f {ft,std}.{txt,out}
+	rm -f $ft_bin $ft_txt $std_bin $std_txt
 	[ -s "$deepthought" ] || rm -f $deepthought &>/dev/null
 
 	printRes "$container/$file" $same_compilation $same_bin $same_output $std_compile
