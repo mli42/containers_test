@@ -10,7 +10,7 @@ int		main(void)
 	TESTED_NAMESPACE::list<TESTED_TYPE>::reverse_iterator it(it_);
 
 	for (int i = 0; i < size; ++i)
-		*it_++ = (i + 1) * 5;
+		*it_++ = (i + 1) * 7;
 	it_	= lst.begin();
 	printSize(lst);
 
@@ -21,6 +21,7 @@ int		main(void)
 	std::cout << *inc(it.base(), 1) << std::endl;
 
 	std::cout << "TEST OFFSET" << std::endl;
+	--it; // Otherwise prints sentinel node of the circle linked list
 	std::cout << *(it) << std::endl;
 	std::cout << *(it).base() << std::endl;
 
