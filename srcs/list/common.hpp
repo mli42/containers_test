@@ -24,14 +24,26 @@ void	printSize(TESTED_NAMESPACE::list<T> const &lst, bool print_content = 1)
 
 class foo {
 	public:
-		foo(void) { };
-		~foo(void) { };
+		typedef int value_type;
+
+		foo(void) : value(), _verbose(false) { };
+		foo(value_type src) : value(src), _verbose(false) { };
+		foo(foo const &src) : value(src.value), _verbose(false) { };
+		~foo(void) { if (this->_verbose) std::cout << "~foo::foo()" << std::endl; };
 		void m(void) { std::cout << "foo::m called [" << this->value << "]" << std::endl; };
 		void m(void) const { std::cout << "foo::m const called [" << this->value << "]" << std::endl; };
-		foo &operator=(int src) { this->value = src; return *this; };
-		int getValue(void) const { return this->value; };
+		foo &operator=(value_type src) { this->value = src; return *this; };
+		foo &operator=(foo const &src) {
+			if (this->_verbose || src._verbose)
+				std::cout << "foo::operator=(foo) CALLED" << std::endl;
+			this->value = src.value;
+			return *this;
+		};
+		value_type	getValue(void) const { return this->value; };
+		void		switchVerbose(void) { this->_verbose = !(this->_verbose); };
 	private:
-		int	value;
+		value_type	value;
+		bool		_verbose;
 };
 
 std::ostream	&operator<<(std::ostream &o, foo const &bar) {
