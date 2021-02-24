@@ -22,13 +22,14 @@ void	printSize(TESTED_NAMESPACE::list<T> const &lst, bool print_content = 1)
 	std::cout << "###############################################" << std::endl;
 }
 
+template <typename T>
 class foo {
 	public:
-		typedef int value_type;
+		typedef T	value_type;
 
 		foo(void) : value(), _verbose(false) { };
-		foo(value_type src) : value(src), _verbose(false) { };
-		foo(foo const &src) : value(src.value), _verbose(false) { };
+		foo(value_type src, const bool verbose = false) : value(src), _verbose(verbose) { };
+		foo(foo const &src, const bool verbose = false) : value(src.value), _verbose(verbose) { };
 		~foo(void) { if (this->_verbose) std::cout << "~foo::foo()" << std::endl; };
 		void m(void) { std::cout << "foo::m called [" << this->value << "]" << std::endl; };
 		void m(void) const { std::cout << "foo::m const called [" << this->value << "]" << std::endl; };
@@ -41,12 +42,17 @@ class foo {
 		};
 		value_type	getValue(void) const { return this->value; };
 		void		switchVerbose(void) { this->_verbose = !(this->_verbose); };
+
+		operator value_type(void) const {
+			return value_type(this->value);
+		}
 	private:
 		value_type	value;
 		bool		_verbose;
 };
 
-std::ostream	&operator<<(std::ostream &o, foo const &bar) {
+template <typename T>
+std::ostream	&operator<<(std::ostream &o, foo<T> const &bar) {
 	o << bar.getValue();
 	return o;
 }

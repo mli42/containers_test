@@ -1,6 +1,6 @@
 #include "common.hpp"
 
-#define TESTED_TYPE foo
+#define TESTED_TYPE foo<int>
 
 unsigned int spliced = 0;
 
