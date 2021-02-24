@@ -29,12 +29,6 @@ void	ft_merge(TESTED_NAMESPACE::list<TESTED_TYPE> &lst,
 		printSize(lst2);
 }
 
-void	ft_sort(TESTED_NAMESPACE::list<TESTED_TYPE> &lst)
-{
-	lst.sort();
-	printSize(lst);
-}
-
 void	ft_push_back(TESTED_NAMESPACE::list<TESTED_TYPE> &lst, const UNDER_TYPE val)
 {
 	lst.push_back(val);
@@ -45,16 +39,13 @@ int		main(void)
 {
 	TESTED_NAMESPACE::list<TESTED_TYPE> first, second;
 
-	ft_push_back(first, 3.1);
 	ft_push_back(first, 2.2);
 	ft_push_back(first, 2.9);
+	ft_push_back(first, 3.1);
 
+	ft_push_back(second, 1.4);
 	ft_push_back(second, 3.7);
 	ft_push_back(second, 7.1);
-	ft_push_back(second, 1.4);
-
-	ft_sort(first);
-	ft_sort(second);
 
 	std::cout << "\t-- MERGE --" << std::endl;
 
