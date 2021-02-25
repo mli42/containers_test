@@ -2,15 +2,6 @@
 
 #define TESTED_TYPE int
 
-void	printReverse(TESTED_NAMESPACE::list<TESTED_TYPE> &lst)
-{
-	TESTED_NAMESPACE::list<TESTED_TYPE>::iterator it = lst.end(), ite = lst.begin();
-
-	while (it-- != ite)
-		std::cout << "-> " << *it << std::endl;
-	std::cout << "_______________________________________________" << std::endl;
-}
-
 int		main(void)
 {
 	TESTED_NAMESPACE::list<TESTED_TYPE> lst(5), lst2(1, 42), lst3;

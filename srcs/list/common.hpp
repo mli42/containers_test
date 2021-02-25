@@ -23,6 +23,17 @@ void	printSize(TESTED_NAMESPACE::list<T> const &lst, bool print_content = 1)
 }
 
 template <typename T>
+void	printReverse(TESTED_NAMESPACE::list<T> &lst)
+{
+	typename TESTED_NAMESPACE::list<T>::iterator it = lst.end(), ite = lst.begin();
+
+	std::cout << "printReverse:" << std::endl;
+	while (it-- != ite)
+		std::cout << "-> " << *it << std::endl;
+	std::cout << "_______________________________________________" << std::endl;
+}
+
+template <typename T>
 class foo {
 	public:
 		typedef T	value_type;

@@ -64,7 +64,7 @@ int		main(void)
 	it = ++(++(++lst.begin()));
 
 	ft_splice(lst, lst.begin(), lst, it, lst.end());
-	printSize(lst2);
+	printReverse(lst);
 
 	return (0);
 }
