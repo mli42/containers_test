@@ -1,5 +1,5 @@
-#include "list.hpp"
-#include <list>
+#include "map.hpp"
+#include <map>
 #include <iostream>
 #include <string>
 
@@ -7,29 +7,40 @@
 # define TESTED_NAMESPACE ft
 #endif
 
+#define _pair TESTED_NAMESPACE::pair
+
 template <typename T>
-void	printSize(TESTED_NAMESPACE::list<T> const &lst, bool print_content = 1)
+std::string	printPair(const T &iterator, bool nl = true, std::ostream &o = std::cout)
 {
-	std::cout << "size: " << lst.size() << std::endl;
-	std::cout << "max_size: " << lst.max_size() << std::endl;
+	o << "key: " << iterator->first << " | value: " << iterator->second;
+	if (nl)
+		o << std::endl;
+	return ("");
+}
+
+template <typename T1, typename T2>
+void	printSize(TESTED_NAMESPACE::map<T1, T2> const &mp, bool print_content = 1)
+{
+	std::cout << "size: " << mp.size() << std::endl;
+	std::cout << "max_size: " << mp.max_size() << std::endl;
 	if (print_content)
 	{
-		typename TESTED_NAMESPACE::list<T>::const_iterator it = lst.begin(), ite = lst.end();
+		typename TESTED_NAMESPACE::map<T1, T2>::const_iterator it = mp.begin(), ite = mp.end();
 		std::cout << std::endl << "Content is:" << std::endl;
 		for (; it != ite; ++it)
-			std::cout << "- " << *it << std::endl;
+			std::cout << "- " << printPair(it, false) << std::endl;
 	}
 	std::cout << "###############################################" << std::endl;
 }
 
-template <typename T>
-void	printReverse(TESTED_NAMESPACE::list<T> &lst)
+template <typename T1, typename T2>
+void	printReverse(TESTED_NAMESPACE::map<T1, T2> &mp)
 {
-	typename TESTED_NAMESPACE::list<T>::iterator it = lst.end(), ite = lst.begin();
+	typename TESTED_NAMESPACE::map<T1, T2>::iterator it = mp.end(), ite = mp.begin();
 
 	std::cout << "printReverse:" << std::endl;
 	while (it-- != ite)
-		std::cout << "-> " << *it << std::endl;
+		std::cout << "-> " << printPair(it, false) << std::endl;
 	std::cout << "_______________________________________________" << std::endl;
 }
 

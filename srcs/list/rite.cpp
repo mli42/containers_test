@@ -15,7 +15,7 @@ int		main(void)
 	printSize(lst);
 
 	std::cout << (it_ == it.base()) << std::endl;
-	std::cout << (it_ == inc(it, 3).base()) << std::endl;
+	std::cout << (it_ == dec(it, 3).base()) << std::endl;
 
 	std::cout << *it.base() << std::endl;
 	std::cout << *inc(it.base(), 1) << std::endl;
