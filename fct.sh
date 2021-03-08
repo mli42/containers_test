@@ -90,7 +90,7 @@ do_test () {
 
 function main () {
 	pheader
-	containers=(vector)
+	containers=(vector list map stack queue)
 	if [ $# -ne 0 ]; then
 		containers=($@);
 	fi
