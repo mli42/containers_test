@@ -41,12 +41,20 @@ Examples:
 ./one srcs/list/rite.cpp std # to see the output of this test file with the std
 ```
 
+How to read the output ?
+```
+The [ ✅ / ❌ ] emojis shows if it has the same return as the STL, i.e if the STL and your implementation:
+- compile the same way,
+- return the same number,
+- print the same output (if a a diff occurs, a deepthought is created).
+
+THE [Y/N] shows if the STL compile (Y) or not (N), there are some test where you should not compile.
+(If every test gives `N`, there is probably a problem with your `.h`.
+```
+
 ## Tested features
 - [x] vector
-- [x] vector's iterators
-- [ ] list
-- [ ] list's iterators
-- [ ] stack
-- [ ] queue
-- [ ] map
-- [ ] map's iterators
+- [x] list
+- [x] map
+- [x] stack
+- [x] queue
