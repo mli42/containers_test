@@ -1,12 +1,12 @@
 # containers_test
 
 <p align="center">
-	<img src="./assets/img.png" >
+	<img src="./assets/demo.gif" >
 </p>
 
 ## Usage
 
-Go in your ft_containers' repository and:
+Go in your ft_containers' directory:
 
 ```bash
 git clone https://github.com/mli42/containers_test.git && cd ./containers_test/
@@ -22,34 +22,35 @@ Expected tree:
     └── [...]
 ```
 
-Then what?  
-There are a few executables and here is their usage:
+Then what? \
+There are a three executables! How do we use them?
 
 ```bash
 ./do.sh [container_to_test] [...]
 ./cmp_one <path/to/test_file>
-./one <file> [namespace=ft] [path/to/includes=..]
+./one <path/to/test_file> [namespace=ft] [path/to/includes=..]
 ```
 
 Examples:
 ```bash
-./do.sh # to test every containers
-./do.sh vector list # to test only your vector && list, for instance
+./do.sh # tests every containers
+./do.sh vector list # tests only vector && list
 
-./cmp_one srcs/list/size.cpp # to see the result comparison (ft/std) on this test file only
+./cmp_one srcs/list/size.cpp # prints the result comparison (ft/std) on this test file only
 
-./one srcs/list/rite.cpp std # to see the output of this test file with the std
+./one srcs/list/rite.cpp # prints the output of this test file using ft namespace
+./one srcs/list/rite.cpp std # prints the output of this test file using the std
 ```
 
 How to read the output ?
 ```
-The [ ✅ / ❌ ] emojis shows if it has the same return as the STL, i.e if the STL and your implementation:
+The [ ✅ / ❌ ] emojis shows if they behave the same, i.e if the STL and your implementation:
 - compile the same way,
 - return the same number,
 - print the same output (if a a diff occurs, a deepthought is created).
 
-THE [Y/N] shows if the STL compile (Y) or not (N), there are some test where you should not compile.
-(If every test gives `N`, there is probably a problem with your `.h`.
+The [Y/N] shows if the STL compile (Y) or not (N), there are some test where you should not compile.
+(If every test gives `N`, there is probably a problem with your hpp headers. Use ./one to debug)
 ```
 
 ## Tested features
