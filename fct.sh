@@ -47,35 +47,37 @@ isEq () {
 cmp_one () {
 	# 1=path/to/file
 
+	deepdir="deepthought"; logdir="logs"
+	mkdir -p $deepdir $logdir
 	container=$(echo $1 | cut -d "/" -f 2)
 	file=$(echo $1 | cut -d "/" -f 3)
-	ft_bin="ft.$container.out"; ft_txt="ft.$container.txt"
-	std_bin="std.$container.out"; std_txt="std.$container.txt"
-	mkdir -p deepthought
+	testname=$(echo $file | cut -d "." -f 1)
+	ft_bin="ft.$container.out"; ft_log="$logdir/ft.$testname.$container.log"
+	std_bin="std.$container.out"; std_log="$logdir/std.$testname.$container.log"
 
 	compile "$1" "ft"  "$ft_bin";  ft_ret=$?
 	compile "$1" "std" "$std_bin"; std_ret=$?
 	same_compilation=$(isEq $ft_ret $std_ret)
 	std_compile=$std_ret
 
-	> $ft_txt; > $std_txt;
+	> $ft_log; > $std_log;
 	if [ $ft_ret -eq 0 ]; then
-		./$ft_bin &>$ft_txt; ft_ret=$?
+		./$ft_bin &>$ft_log; ft_ret=$?
 	fi
 	if [ $std_ret -eq 0 ]; then
-		./$std_bin &>$std_txt; std_ret=$?
+		./$std_bin &>$std_log; std_ret=$?
 	fi
 	same_bin=$(isEq $ft_ret $std_ret)
 
-	deepthought=$(echo "deepthought/$file" | sed s/cpp/$container.diff/)
-	diff $std_txt $ft_txt 2>/dev/null 1>"$deepthought";
+	diff_file="$deepdir/$testname.$container.diff"
+	diff $std_log $ft_log 2>/dev/null 1>"$diff_file";
 	same_output=$?
 
-	rm -f $ft_bin $ft_txt $std_bin $std_txt
-	[ -s "$deepthought" ] || rm -f $deepthought &>/dev/null
+	rm -f $ft_bin $std_bin
+	[ -s "$diff_file" ] || rm -f $diff_file $ft_log $std_log &>/dev/null
 
 	printRes "$container/$file" $same_compilation $same_bin $same_output $std_compile
-	rmdir deepthought &>/dev/null
+	rmdir $deepdir $logdir &>/dev/null
 }
 
 do_test () {

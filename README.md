@@ -47,7 +47,9 @@ How to read the output ?
 The [ ✅ / ❌ ] emojis shows if they behave the same, i.e if the STL and your implementation:
 - compile the same way,
 - return the same number,
-- print the same output (if a a diff occurs, a deepthought is created).
+- print the same output.
+
+If a diff occurs, a deepthought is created and logs are kept.
 
 The [Y/N] shows if the STL compile (Y) or not (N), there are some test where you should not compile.
 (If every test gives `N`, there is probably a problem with your hpp headers. Use ./one to debug)
