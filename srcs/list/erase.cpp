@@ -9,7 +9,7 @@ void	checkErase(TESTED_NAMESPACE::list<TESTED_TYPE> const &lst,
 
 	int j = 0;
 	TESTED_NAMESPACE::list<TESTED_TYPE>::const_iterator ite = lst.begin();
-	while (it != ite--)
+	while (it != ite++)
 		++j;
 
 	std::cout << "[" << i++ << "] " << "erase: " << j << std::endl;
