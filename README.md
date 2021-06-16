@@ -61,3 +61,13 @@ The [Y/N] shows if the STL compile (Y) or not (N), there are some test where you
 - [x] map
 - [x] stack
 - [x] queue
+- [x] deque
+- [x] multimap
+- [x] set
+- [x] multiset
+
+## Contributors
+
+- cclaude, add bonus' tests (deque multimap set multiset)
+
+Thank you!
