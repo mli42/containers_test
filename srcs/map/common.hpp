@@ -39,8 +39,10 @@ void	printReverse(TESTED_NAMESPACE::map<T1, T2> &mp)
 	typename TESTED_NAMESPACE::map<T1, T2>::iterator it = mp.end(), ite = mp.begin();
 
 	std::cout << "printReverse:" << std::endl;
-	while (it-- != ite)
+	while (it != ite){
+		it--;
 		std::cout << "-> " << printPair(it, false) << std::endl;
+	}
 	std::cout << "_______________________________________________" << std::endl;
 }
 
