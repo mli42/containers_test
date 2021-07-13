@@ -31,4 +31,8 @@
 *.out*
 *.app
 
+# Test results
+*.log
+*.diff
+
 .vscode

@@ -28,8 +28,10 @@ void	printReverse(TESTED_NAMESPACE::list<T> &lst)
 	typename TESTED_NAMESPACE::list<T>::iterator it = lst.end(), ite = lst.begin();
 
 	std::cout << "printReverse:" << std::endl;
-	while (it-- != ite)
+	while (it != ite) {
+		it--;
 		std::cout << "-> " << *it << std::endl;
+	}
 	std::cout << "_______________________________________________" << std::endl;
 }
 
