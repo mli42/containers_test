@@ -9,8 +9,7 @@ void	checkErase(TESTED_NAMESPACE::list<TESTED_TYPE> const &lst,
 
 	int j = 0;
 	TESTED_NAMESPACE::list<TESTED_TYPE>::const_iterator ite = lst.end();
-	while (it != ite)
-	{
+	while (it != ite) {
 		--ite;
 		++j;
 	}
@@ -35,6 +34,7 @@ int		main(void)
 
 	checkErase(lst, lst.erase(lst.begin(), ++(++(++lst.begin()))));
 	checkErase(lst, lst.erase(--(--(--lst.end())), --lst.end()));
+
 	lst.push_back("Hello");
 	lst.push_back("Hi there");
 	printSize(lst);
