@@ -4,6 +4,13 @@
 	<img src="./assets/demo.gif" >
 </p>
 
+## Warning
+
+This tester was made with the first version of ft_containers' subject \
+Thus it does not test iterator traits (yet?)
+
+Also, passing this tester does not mean the project was done correctly, please go further
+
 ## Usage
 
 Go in your ft_containers' directory:
@@ -21,6 +28,10 @@ Expected tree:
 └── containers_test
     └── [...]
 ```
+
+If your project does not fit the expected tree (e.g. has sub-directories and/or file names are capitalized or what) \
+Please edit the first line of `./<container>/common.hpp` (for filenames) \
+Or the variable `tested_path` in `fct.sh` (for special path)
 
 Then what? \
 There are a three executables! How do we use them?
@@ -68,6 +79,5 @@ The [Y/N] shows if the STL compile (Y) or not (N), there are some test where you
 
 ## Contributors
 
-- cclaude, add bonus' tests (deque multimap set multiset)
-
+PRs are welcomed! \
 Thank you!
