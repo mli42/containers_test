@@ -1,14 +1,11 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
-if [ $# -eq 0 ]; then
-	echo "Usage: $0 <file> [namespace=ft] [path/to/includes=..]"
-	return
+if [ $# -lt 1 ] || [ $# -gt 2 ]; then
+	echo "Usage: $0 <file> [namespace=ft]"
+	exit 1
 fi
 
-if [ -z "$2" ]; then 2="ft"; fi
-if [ -z "$3" ]; then 3=".."; fi
+source fct.sh
+[[ -z "$2" ]] && testedNamespace="ft" || testedNamespace="$2";
 
-CC="clang++"
-CFLAGS="-Wall -Wextra -Werror -std=c++98"
-
-eval "$CC $CFLAGS $1 -DTESTED_NAMESPACE=$2 -I$3 && ./a.out"
+eval "$CC $CFLAGS $1 -DTESTED_NAMESPACE=${testedNamespace} -I${tested_path} && ./a.out"

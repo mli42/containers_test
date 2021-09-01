@@ -39,7 +39,7 @@ There are a three executables! How do we use them?
 ```bash
 ./do.sh [container_to_test] [...]
 ./cmp_one <path/to/test_file>
-./one <path/to/test_file> [namespace=ft] [path/to/includes=..]
+./one <path/to/test_file> [namespace=ft]
 ```
 
 Examples:
