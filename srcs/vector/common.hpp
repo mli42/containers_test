@@ -7,11 +7,18 @@
 # define TESTED_NAMESPACE ft
 #endif
 
+#define T_SIZE_TYPE typename TESTED_NAMESPACE::vector<T>::size_type
+
 template <typename T>
-void	printSize(TESTED_NAMESPACE::vector<T> const &vct, bool print_content = 1)
+void	printSize(TESTED_NAMESPACE::vector<T> const &vct, bool print_content = true)
 {
-	std::cout << "size: " << vct.size() << std::endl;
-	std::cout << "capacity: " << vct.capacity() << std::endl;
+	const T_SIZE_TYPE size = vct.size();
+	const T_SIZE_TYPE capacity = vct.capacity();
+	const std::string isCapacityOk = (capacity >= size) ? "OK" : "KO";
+	// Cannot limit capacity's max value because it's implementation dependent
+
+	std::cout << "size: " << size << std::endl;
+	std::cout << "capacity: " << isCapacityOk << std::endl;
 	std::cout << "max_size: " << vct.max_size() << std::endl;
 	if (print_content)
 	{
