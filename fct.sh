@@ -43,11 +43,51 @@ compile () {
 	return $?
 }
 
+getEmoji () {
+	# 1=integer
+	emoji='';
+	case $1 in
+		0) emoji="${GREEN}✅";;
+		1) emoji="${RED}❌";;
+		2) emoji="${YELLOW}⚠️ ";;
+	esac
+	printf "${BOLD}${emoji}${EOC}"
+}
+
+getYN () {
+	# 1=integer
+	res='';
+	case $1 in
+		0) res="Y";;
+		1) res="N";;
+	esac
+	printf "${res}"
+}
+
 printRes () {
 	# 1=file 2=compile 3=bin 4=output 5=std_compile
-	b[0]="${BOLD}${GREEN}✅${EOC}"; b[1]="${BOLD}${RED}❌${EOC}";
-	s_bool[0]="Y"; s_bool[1]="N";
-	printf "%-35s: COMPILE: ${b[$2]} | RET: ${b[$3]} | OUT: ${b[$4]} | STD: [${s_bool[$5]}]\n" $1
+	printf "%-35s: COMPILE: %s | RET: %s | OUT: %s | STD: [%s]\n" \
+		"$1" "$(getEmoji $2)" "$(getEmoji $3)" "$(getEmoji $4)" "$(getYN $5)"
+}
+
+# If diff_file empty, return 0 -> ok
+# If diff is about max_size, return 2 -> warning
+# Else, diff is something really important, return 1 -> error
+compare_output () {
+	# 1=diff_file
+	if ! [ -s $1 ]; then
+		return 0
+	fi
+	regex=$(cat <<- EOF
+	\d+c\d+
+	< max_size: \d+
+	---
+	> max_size: \d+
+	EOF
+	)
+
+	cat $1 | grep -v -E "$regex" &>/dev/null
+	[ "$?" -eq "0" ] && return 1 || return 2;
 }
 
 isEq () {
@@ -90,6 +130,7 @@ cmp_one () {
 
 	diff_file="$deepdir/$testname.$container.diff"
 	diff $std_log $ft_log 2>/dev/null 1>"$diff_file";
+	compare_output $diff_file
 	same_output=$?
 
 	rm -f $ft_bin $std_bin
