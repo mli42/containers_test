@@ -86,7 +86,7 @@ compare_output () {
 	EOF
 	)
 
-	cat $1 | grep -v -E "$regex" &>/dev/null
+	cat $1 | grep -v -Pzo "$regex" &>/dev/null
 	[ "$?" -eq "0" ] && return 1 || return 2;
 }
 
