@@ -78,15 +78,15 @@ compare_output () {
 	if ! [ -s $1 ]; then
 		return 0
 	fi
-	regex=$(cat <<- EOF
-	\d+c\d+
-	< max_size: \d+
-	---
-	> max_size: \d+
-	EOF
-	)
+	regex="\d+c\d+\n< max_size: \d+\n---\n> max_size: \d+\n"
 
-	cat $1 | grep -v -Pzo "$regex" &>/dev/null
+	if [ `uname` == "Darwin" ]; then
+		grep_args="-vE"
+	else
+		grep_args="-vPzo"
+	fi
+
+	cat $1 | grep $grep_args "$regex" &> /dev/null
 	[ "$?" -eq "0" ] && return 1 || return 2;
 }
 
