@@ -79,10 +79,10 @@ compare_output () {
 		return 0
 	fi
 	regex=$(cat <<- EOF
-	\d+c\d+
-	< max_size: \d+
+	^[0-9]*c[0-9]*
+	< max_size: [0-9]*
 	---
-	> max_size: \d+
+	> max_size: [0-9]*$
 	EOF
 	)
 
