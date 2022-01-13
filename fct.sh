@@ -10,7 +10,7 @@ PURPLE="\e[95m"
 CYAN="\e[96m"
 DGREY="\e[1;90m"
 
-tested_path="../"
+tested_path="../containers"
 incl_path="$tested_path"
 srcs="srcs"
 
