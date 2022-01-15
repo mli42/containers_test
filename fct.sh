@@ -86,7 +86,7 @@ compare_output () {
 	EOF
 	)
 
-	cat $1 | grep -v -E "$regex" &>/dev/null
+	cat $1 | grep -v -E -q "$regex"
 	[ "$?" -eq "0" ] && return 1 || return 2;
 }
 
@@ -112,7 +112,8 @@ cmp_one () {
 	std_compile=$std_ret
 
 	if [ $std_compile -ne 0 ] && \
-		cat $std_compile_log | grep "$container/common.hpp:1" &>/dev/null; then
+		cat $std_compile_log | grep "$container/common.hpp:1" | \
+			grep -iq "file not found"; then
 		rm -f $std_compile_log
 		printf "${BOLD}${PURPLE}[$container/$testname] Cannot compile, please use \`./one\` to debug${EOC}\n"
 		return;
