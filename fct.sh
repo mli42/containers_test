@@ -38,8 +38,12 @@ printf "\e[0;1;94m\
 }
 
 compile () {
-	# 1=file 2=define used {ft/std} 3=output_file 4=compile_log
-	$CC $CFLAGS -o "$3" -I./$incl_path -DTESTED_NAMESPACE=$2 $1 &>$4
+	# 1=file 2=define used {ft/std} 3=output_file 4?=compile_log
+	compile_cmd="$CC $CFLAGS -o ${3} -I./$incl_path -DTESTED_NAMESPACE=${2} ${1}"
+	if [ -n "$4" ]; then
+		compile_cmd+=" &>${4}"
+	fi
+	eval "${compile_cmd}"
 	return $?
 }
 

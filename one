@@ -6,6 +6,8 @@ if [ $# -lt 1 ] || [ $# -gt 2 ]; then
 fi
 
 source fct.sh
-[[ -z "$2" ]] && testedNamespace="ft" || testedNamespace="$2";
+testedNamespace=$([[ -z "$2" ]] && echo "ft" || echo "$2")
+output_file="a.out"
 
-eval "$CC $CFLAGS $1 -DTESTED_NAMESPACE=${testedNamespace} -I${tested_path} && ./a.out"
+compile "$1" "${testedNamespace}" "${output_file}" && \
+	./${output_file}
