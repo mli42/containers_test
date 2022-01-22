@@ -7,7 +7,8 @@
 ## Warning
 
 This tester was made with the first version of ft_containers' subject \
-Thus it does not test iterator traits (yet?)
+Thus it does not test iterator traits (yet?) \
+There aren't benchmark tests either.
 
 Also, passing this tester does not mean the project was done correctly, please go further
 
@@ -26,12 +27,12 @@ Expected tree:
 ├── <container>.hpp
 ├── [...]
 └── containers_test
-    └── [...]
+    └── [...]
 ```
 
 If your project does not fit the expected tree (e.g. has sub-directories and/or file names are capitalized or what) \
-Please edit the first line of `./<container>/common.hpp` (for filenames) \
-Or the variable `tested_path` in `fct.sh` (for special path)
+Please edit the third line of each `./<container>/common.hpp` (for filenames) \
+Or the variable `incl_path` in `fct.sh` (for special path)
 
 Then what? \
 There are a three executables! How do we use them?
@@ -63,7 +64,6 @@ The [ ✅ / ❌ ] emojis shows if they behave the same, i.e if the STL and your 
 If a diff occurs, a deepthought is created and logs are kept.
 
 The [Y/N] shows if the STL compile (Y) or not (N), there are some test where you should not compile.
-(If every test gives `N`, there is probably a problem with your hpp headers. Use ./one to debug)
 ```
 
 ## Tested features
