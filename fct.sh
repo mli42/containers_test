@@ -10,19 +10,15 @@ PURPLE="\e[95m"
 CYAN="\e[96m"
 DGREY="\e[1;90m"
 
-tested_path="../containers"
-incl_path="$tested_path"
+incl_path="../containers"
 srcs="srcs"
 
 CC="clang++"
 CFLAGS="-Wall -Wextra -Werror -std=c++98"
-
-if false; then
-	CFLAGS+=" -fsanitize=address -g3"
-fi
+# CFLAGS+=" -fsanitize=address -g3"
 
 function pheader () {
-printf "\e[0;1;94m\
+printf "${EOC}${BOLD}${DBLUE}\
 # ****************************************************************************** #
 #                                                                                #
 #                                :::   :::   :::                                 #
@@ -34,12 +30,17 @@ printf "\e[0;1;94m\
 #                        ###       ### ### ###  containers_test                  #
 #                                                                                #
 # ****************************************************************************** #
-\e[0m"
+${EOC}"
 }
 
 compile () {
-	# 1=file 2=define used {ft/std} 3=output_file 4=compile_log
-	$CC $CFLAGS -o "$3" -I./$incl_path -DTESTED_NAMESPACE=$2 $1 &>$4
+	# 1=file 2=define used {ft/std} 3=output_file 4?=compile_log
+	macro_name=$(echo "USING_${2}" | awk '{ print toupper($0) }')
+	compile_cmd="$CC $CFLAGS -o ${3} -I./$incl_path -D ${macro_name} ${1}"
+	if [ -n "$4" ]; then
+		compile_cmd+=" &>${4}"
+	fi
+	eval "${compile_cmd}"
 	return $?
 }
 
@@ -86,7 +87,7 @@ compare_output () {
 	EOF
 	)
 
-	cat $1 | grep -v -E "$regex" &>/dev/null
+	cat $1 | grep -v -E -q "$regex"
 	[ "$?" -eq "0" ] && return 1 || return 2;
 }
 
@@ -104,20 +105,18 @@ cmp_one () {
 	testname=$(echo $file | cut -d "." -f 1)
 	ft_bin="ft.$container.out"; ft_log="$logdir/ft.$testname.$container.log"
 	std_bin="std.$container.out"; std_log="$logdir/std.$testname.$container.log"
-	std_compile_log="std.$testname.$container.compile.log"
+	diff_file="$deepdir/$testname.$container.diff"
 
-	compile "$1" "ft"  "$ft_bin" /dev/null;  ft_ret=$?
-	compile "$1" "std" "$std_bin" $std_compile_log; std_ret=$?
+	clean_trailing_files () {
+		rm -f $ft_bin $std_bin
+		[ -s "$diff_file" ] || rm -f $diff_file $ft_log $std_log &>/dev/null
+		rmdir $deepdir $logdir &>/dev/null
+	}
+
+	compile "$1" "ft"  "$ft_bin"  /dev/null; ft_ret=$?
+	compile "$1" "std" "$std_bin" /dev/null; std_ret=$?
 	same_compilation=$(isEq $ft_ret $std_ret)
 	std_compile=$std_ret
-
-	if [ $std_compile -ne 0 ] && \
-		cat $std_compile_log | grep "$container/common.hpp:1" &>/dev/null; then
-		rm -f $std_compile_log
-		printf "${BOLD}${PURPLE}[$container/$testname] Cannot compile, please use \`./one\` to debug${EOC}\n"
-		return;
-	fi
-	rm -f $std_compile_log
 
 	> $ft_log; > $std_log;
 	if [ $ft_ret -eq 0 ]; then
@@ -128,25 +127,20 @@ cmp_one () {
 	fi
 	same_bin=$(isEq $ft_ret $std_ret)
 
-	diff_file="$deepdir/$testname.$container.diff"
 	diff $std_log $ft_log 2>/dev/null 1>"$diff_file";
 	compare_output $diff_file
 	same_output=$?
 
-	rm -f $ft_bin $std_bin
-	[ -s "$diff_file" ] || rm -f $diff_file $ft_log $std_log &>/dev/null
-
 	printRes "$container/$file" $same_compilation $same_bin $same_output $std_compile
-	rmdir $deepdir $logdir &>/dev/null
+	clean_trailing_files
 }
 
 do_test () {
 	# 1=container_name
-	test_dir="$srcs/$1"
-	test_files=`ls $test_dir | grep "cpp"`
+	test_files=$(find "${srcs}/${1}" -type f -name '*.cpp' | sort)
 
 	for file in ${test_files[@]}; do
-		cmp_one "$test_dir/$file"
+		cmp_one "${file}"
 	done
 }
 

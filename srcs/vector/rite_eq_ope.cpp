@@ -1,6 +1,6 @@
 #include "common.hpp"
 
-#define TESTED_TYPE foo
+#define TESTED_TYPE foo<int>
 
 template <typename Ite_1, typename Ite_2>
 void ft_eq_ope(const Ite_1 &first, const Ite_2 &second, const bool redo = 1)
