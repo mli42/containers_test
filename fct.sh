@@ -14,7 +14,7 @@ incl_path="../containers"
 srcs="srcs"
 
 CC="clang++"
-CFLAGS="-Wall -Wextra -Werror -std=c++98"
+CFLAGS="-Wall -Wextra -Werror -std=c++98 -g3"
 # CFLAGS+=" -fsanitize=address -g3"
 
 function pheader () {
