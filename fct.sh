@@ -146,7 +146,7 @@ do_test () {
 
 function main () {
 	pheader
-	containers=(vector map stack set)
+	containers=(vector map)
 	# containers=(vector list map stack queue deque multimap set multiset)
 	if [ $# -ne 0 ]; then
 		containers=($@);
