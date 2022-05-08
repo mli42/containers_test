@@ -1,5 +1,15 @@
 #!/usr/bin/env bash
 
+ft_output="/dev/null"
+std_output="/dev/null"
+
+include_path="../"
+srcs="srcs"
+
+CC="clang++"
+CFLAGS="-Wall -Wextra -Werror -std=c++98"
+# CFLAGS+=" -fsanitize=address -g3"
+
 EOC="\e[0m"
 BOLD="\e[1m"
 RED="\e[91m"
@@ -9,13 +19,6 @@ DBLUE="\e[94m"
 PURPLE="\e[95m"
 CYAN="\e[96m"
 DGREY="\e[1;90m"
-
-incl_path="../"
-srcs="srcs"
-
-CC="clang++"
-CFLAGS="-Wall -Wextra -Werror -std=c++98"
-# CFLAGS+=" -fsanitize=address -g3"
 
 function pheader () {
 printf "${EOC}${BOLD}${DBLUE}\
@@ -36,7 +39,7 @@ ${EOC}"
 compile () {
 	# 1=file 2=define used {ft/std} 3=output_file 4?=compile_log
 	macro_name=$(echo "USING_${2}" | awk '{ print toupper($0) }')
-	compile_cmd="$CC $CFLAGS -o ${3} -I./$incl_path -D ${macro_name} ${1}"
+	compile_cmd="$CC $CFLAGS -o ${3} -I./$include_path -D ${macro_name} ${1}"
 	if [ -n "$4" ]; then
 		compile_cmd+=" &>${4}"
 	fi
@@ -113,8 +116,8 @@ cmp_one () {
 		rmdir $deepdir $logdir &>/dev/null
 	}
 
-	compile "$1" "ft"  "$ft_bin"  /dev/null; ft_ret=$?
-	compile "$1" "std" "$std_bin" /dev/null; std_ret=$?
+	compile "$1" "ft"  "$ft_bin"  $ft_output; ft_ret=$?
+	compile "$1" "std" "$std_bin" $std_output; std_ret=$?
 	same_compilation=$(isEq $ft_ret $std_ret)
 	std_compile=$std_ret
 
