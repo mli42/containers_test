@@ -1,15 +1,5 @@
 #!/usr/bin/env bash
 
-ft_output="/dev/null"
-std_output="/dev/null"
-
-include_path="../"
-srcs="srcs"
-
-CC="clang++"
-CFLAGS="-Wall -Wextra -Werror -std=c++98"
-# CFLAGS+=" -fsanitize=address -g3"
-
 EOC="\e[0m"
 BOLD="\e[1m"
 RED="\e[91m"
@@ -19,6 +9,16 @@ DBLUE="\e[94m"
 PURPLE="\e[95m"
 CYAN="\e[96m"
 DGREY="\e[1;90m"
+
+include_path="../"
+srcs="srcs"
+
+CC="clang++"
+CFLAGS="-Wall -Wextra -Werror -std=c++98"
+# CFLAGS+=" -fsanitize=address -g3"
+
+ft_compile_output="/dev/null"
+std_compile_output="/dev/null"
 
 function pheader () {
 printf "${EOC}${BOLD}${DBLUE}\
@@ -116,8 +116,8 @@ cmp_one () {
 		rmdir $deepdir $logdir &>/dev/null
 	}
 
-	compile "$1" "ft"  "$ft_bin"  $ft_output; ft_ret=$?
-	compile "$1" "std" "$std_bin" $std_output; std_ret=$?
+	compile "$1" "ft"  "$ft_bin"  $ft_compile_output; ft_ret=$?
+	compile "$1" "std" "$std_bin" $std_compile_output; std_ret=$?
 	same_compilation=$(isEq $ft_ret $std_ret)
 	std_compile=$std_ret
 
