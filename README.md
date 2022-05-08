@@ -32,7 +32,7 @@ Expected tree:
 
 If your project does not fit the expected tree (e.g. has sub-directories and/or file names are capitalized or what) \
 Please edit the third line of each `./<container>/common.hpp` (for filenames) \
-Or the variable `incl_path` in `fct.sh` (for special path)
+Or the variable `include_path` in `fct.sh` (for special path)
 
 Then what? \
 There are a three executables! How do we use them?
