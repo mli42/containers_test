@@ -44,7 +44,7 @@ int		main(void)
 	printSize(vct);
 
 	for (int i = 0; i < 5; ++i)
-		vct3.push_back(i);	
+		vct3.insert(vct3.end(), i);
 	vct3.insert(vct3.begin() + 1, 2, 111);
 	printSize(vct3);
 
