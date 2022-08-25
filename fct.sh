@@ -20,6 +20,9 @@ CFLAGS="-Wall -Wextra -Werror -std=c++98"
 ft_compile_output="/dev/null"
 std_compile_output="/dev/null"
 
+deepdir="deepthought"
+logdir="logs"
+
 function pheader () {
 printf "${EOC}${BOLD}${DBLUE}\
 # ****************************************************************************** #
@@ -100,8 +103,6 @@ isEq () {
 
 cmp_one () {
 	# 1=path/to/file
-
-	deepdir="deepthought"; logdir="logs"
 	mkdir -p $deepdir $logdir
 	container=$(echo $1 | cut -d "/" -f 2)
 	file=$(echo $1 | cut -d "/" -f 3)
@@ -138,9 +139,19 @@ cmp_one () {
 	clean_trailing_files
 }
 
+previous_subdir () {
+	if ls "${1}/"*${2} &> /dev/null; then
+		mkdir -p "${1}/previous"
+		mv "${1}/"*${2} "${1}/previous/"
+	fi
+}
+
 do_test () {
 	# 1=container_name
 	test_files=$(find "${srcs}/${1}" -type f -name '*.cpp' | sort)
+
+	previous_subdir $deepdir ".diff"
+	previous_subdir $logdir ".log"
 
 	for file in ${test_files[@]}; do
 		cmp_one "${file}"
