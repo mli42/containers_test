@@ -116,17 +116,32 @@ cmp_one () {
 		rmdir $deepdir $logdir &>/dev/null
 	}
 
-	compile "$1" "ft"  "$ft_bin"  $ft_compile_output; ft_ret=$?
-	compile "$1" "std" "$std_bin" $std_compile_output; std_ret=$?
+	# Launch async compilations for ft/std binaries
+	compile "$1" "ft"  "$ft_bin"  $ft_compile_output & ft_pid=$!;
+	compile "$1" "std" "$std_bin" $std_compile_output & std_pid=$!;
+
+	wait ${ft_pid}; ft_ret=$?;
+	wait ${std_pid}; std_ret=$?;
 	same_compilation=$(isEq $ft_ret $std_ret)
 	std_compile=$std_ret
 
 	> $ft_log; > $std_log;
-	if [ $ft_ret -eq 0 ]; then
-		./$ft_bin &>$ft_log; ft_ret=$?
+	# Starting async binaries execution (if compilation succeeded)
+	if [ ${ft_ret} -eq 0 ]; then
+		./${ft_bin} &>${ft_log} &
+		ft_pid=$!;
 	fi
-	if [ $std_ret -eq 0 ]; then
-		./$std_bin &>$std_log; std_ret=$?
+	if [ ${std_ret} -eq 0 ]; then
+		./${std_bin} &>${std_log} &
+		std_pid=$!;
+	fi
+
+	# Waiting binaries execution (if compilation succeeded)
+	if [ "${ft_ret}" -eq 0 ]; then
+		wait ${ft_pid}; ft_ret=$?;
+	fi
+	if [ "${std_ret}" -eq 0 ]; then
+		wait ${std_pid}; std_ret=$?;
 	fi
 	same_bin=$(isEq $ft_ret $std_ret)
 
