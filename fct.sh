@@ -19,7 +19,6 @@ CFLAGS="-Wall -Wextra -Werror -std=c++98"
 
 ft_compile_output="/dev/null"
 std_compile_output="/dev/null"
-pid=()
 
 function pheader () {
 printf "${EOC}${BOLD}${DBLUE}\
@@ -44,9 +43,8 @@ compile () {
 	if [ -n "$4" ]; then
 		compile_cmd+=" &>${4}"
 	fi
-	compile_cmd+=" &"
 	eval "${compile_cmd}"
-	pid+=("$!")
+	return $?
 }
 
 getEmoji () {
@@ -103,7 +101,6 @@ isEq () {
 cmp_one () {
 	# 1=path/to/file
 
-	pid=() #reset pid
 	deepdir="deepthought"; logdir="logs"
 	mkdir -p $deepdir $logdir
 	container=$(echo $1 | cut -d "/" -f 2)
@@ -119,28 +116,32 @@ cmp_one () {
 		rmdir $deepdir $logdir &>/dev/null
 	}
 
-	compile "$1" "ft"  "$ft_bin"  $ft_compile_output;
-	compile "$1" "std" "$std_bin" $std_compile_output;
-	wait "${pid[0]}"; ft_ret=$?
-	wait "${pid[1]}"; std_ret=$?
+	# Launch async compilations for ft/std binaries
+	compile "$1" "ft"  "$ft_bin"  $ft_compile_output & ft_pid=$!;
+	compile "$1" "std" "$std_bin" $std_compile_output & std_pid=$!;
+
+	wait ${ft_pid}; ft_ret=$?;
+	wait ${std_pid}; std_ret=$?;
 	same_compilation=$(isEq $ft_ret $std_ret)
 	std_compile=$std_ret
 
 	> $ft_log; > $std_log;
-	pid=() #reset pid
-	if [ $ft_ret -eq 0 ]; then
-		./$ft_bin &>$ft_log &
-		pid+=("$!")
+	# Starting async binaries execution (if compilation succeeded)
+	if [ ${ft_ret} -eq 0 ]; then
+		./${ft_bin} &>${ft_log} &
+		ft_pid=$!;
 	fi
-	if [ $std_ret -eq 0 ]; then
-		./$std_bin &>$std_log &
-		pid+=("$!")
+	if [ ${std_ret} -eq 0 ]; then
+		./${std_bin} &>${std_log} &
+		std_pid=$!;
 	fi
-	if [ "$ft_ret" -eq 0 ]; then
-		wait "${pid[0]}"; ft_ret=$?;
+
+	# Waiting binaries execution (if compilation succeeded)
+	if [ "${ft_ret}" -eq 0 ]; then
+		wait ${ft_pid}; ft_ret=$?;
 	fi
-	if [ "$std_ret" -eq 0 ]; then
-		wait "${pid[1]}"; std_ret=$?;
+	if [ "${std_ret}" -eq 0 ]; then
+		wait ${std_pid}; std_ret=$?;
 	fi
 	same_bin=$(isEq $ft_ret $std_ret)
 
